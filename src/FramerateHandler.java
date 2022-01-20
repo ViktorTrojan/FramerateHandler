@@ -48,7 +48,6 @@ public class FramerateHandler {
                 timer = System.currentTimeMillis();
             }
             
-            // Should sleep UPS times
             sleep(1000 / FPS);
         }
     }
