@@ -13,6 +13,7 @@ https://user-images.githubusercontent.com/87524553/150420224-e21f4e3d-3454-4629-
 ## Features
 * **Automatic FPS** ``(Automatically fetches framerate of main monitor)``
 * **CPU usage friendly** ``(uses Thread.sleep for managing game loop)``
+* **Latency Handling** ``(Tries to keep the FPS high even under latency/lag)``
 * **Constant UPS** ``(Updates per second allow for smooth and consistent updates on any system)``
 
 ## Authors
