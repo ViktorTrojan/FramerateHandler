@@ -3,14 +3,25 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class Main {
-    public static JFrame jf;
-    public static Draw draw;
 
-    public static void createFrame(String title) {
+    public static Main instance;
+
+    public FramerateHandler fpsHandler;
+
+    public JFrame jf;
+    public Draw draw;
+
+    public Main() {
+        instance = this;
+        fpsHandler = new FramerateHandler();
+        createFrame("Framerate Handler example");
+    }
+
+    public void createFrame(String title) {
         jf = new JFrame(title);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         draw = new Draw();
-        
+
         draw.setPreferredSize(new Dimension(Draw.WIDTH, Draw.HEIGHT));
         draw.setVisible(true);
         jf.getContentPane().add(draw); // add draw to jf
@@ -20,10 +31,8 @@ public class Main {
         jf.requestFocus();
         jf.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
-        createFrame("FrameHandler");
-        FramerateHandler fpsHandler = new FramerateHandler();
-        fpsHandler.run();
+        Main m = new Main();
     }
 }

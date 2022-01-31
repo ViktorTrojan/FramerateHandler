@@ -1,8 +1,9 @@
+
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 
 public class FramerateHandler {
-
-    public static boolean RUNNING = true;
 
     public final static int UPS = 60;  // UPS = updates per second should be the same for everyone
     public static int FPS; // FPS = frames per second depends on the monitor refresh rate
@@ -25,40 +26,45 @@ public class FramerateHandler {
 
     // PUT YOUR UPDATE LOGIC HERE !
     private void update() {
-        Main.draw.updateCubes();
+        Main.instance.draw.updateCubes();
     }
 
     // PUT YOUR RENDER LOGIC HERE !
-    private void render() {
-        // drawing gets processed here
-        Main.draw.redraw();
+    private void render(Graphics g) {
+        // Background
+        g.setColor(new Color(255, 255, 255));
+        g.fillRect(0, 0, Draw.WIDTH, Draw.HEIGHT);
+
+        // Draw Cubes
+        g.setColor(new Color(255, 0, 0));
+        for (Cube cube : Main.instance.draw.cubes) {
+            g.fillRect(cube.x, cube.y, cube.size, cube.size);
+        }
     }
 
-    public void run() {
-        while (RUNNING) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
+    public void run(Graphics g) {
+        long now = System.nanoTime();
+        delta += (now - lastTime) / ns;
+        lastTime = now;
 
-            long dur = System.nanoTime();
-            while (delta >= 1) { // updates get processed here
-                update();
-                updates++;
-                delta--;
-            }
+        long dur = System.nanoTime();
+        while (delta >= 1) { // updates get processed here
+            update();
+            updates++;
+            delta--;
+        }
 
-            render();
+        render(g);
 
-            int latency = (int) ((System.nanoTime() - dur) / (1000000d));
-            sleep(1000 / FPS - latency);
+        int latency = (int) ((System.nanoTime() - dur) / (1000000d));
+        sleep(1000 / FPS - latency);
 
-            frames++;
-            if (System.currentTimeMillis() - timer > 1000) {
-                System.out.println(updates + " ups, " + frames + " fps" + " latency: " + latency + "ms");
-                updates = 0;
-                frames = 0;
-                timer = System.currentTimeMillis();
-            }
+        frames++;
+        if (System.currentTimeMillis() - timer > 1000) {
+            System.out.println(updates + " ups, " + frames + " fps" + " latency: " + latency + "ms");
+            updates = 0;
+            frames = 0;
+            timer = System.currentTimeMillis();
         }
     }
 

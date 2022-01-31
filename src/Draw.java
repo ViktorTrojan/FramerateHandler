@@ -1,8 +1,5 @@
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 
@@ -18,13 +15,13 @@ class Cube {
     }
 
     void update() {
-        // if the cube hits the border switch velocity
-        if (x + size > Draw.WIDTH || x < 0) {
-            vel = -vel;
-        }
-
         // add velocity to position to make it move
         x += vel;
+        
+        // if the cube hits the border switch velocity
+        if (x + size >= Draw.WIDTH || x <= 0) {
+            vel = -vel;
+        }
     }
 }
 
@@ -51,23 +48,8 @@ public class Draw extends JLabel {
         }
     }
 
-    // redraw gets called in FramerateHandler
-    public void redraw() {
-        repaint();
-    }
-
     protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Background
-        g2.setColor(new Color(255, 255, 255));
-        g2.fillRect(0, 0, WIDTH, HEIGHT);
-
-        // Draw Cubes
-        g2.setColor(new Color(255, 0, 0));
-        for (Cube cube : cubes) {
-            g2.fillRect(cube.x, cube.y, cube.size, cube.size);
-        }
+        Main.instance.fpsHandler.run(g);
+        repaint();
     }
 }
