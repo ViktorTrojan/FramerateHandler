@@ -6,7 +6,7 @@ import java.awt.GraphicsEnvironment;
 public class FramerateHandler {
 
     public final static int UPS = 60;  // UPS = updates per second should be the same for everyone
-    public static int FPS; // FPS = frames per second depends on the monitor refresh rate
+    public static int FPS = 80; // FPS = frames per second depends on the monitor refresh rate
     public int frames, updates;
     public long lastTime, timer;
     public final double ns;
@@ -14,7 +14,9 @@ public class FramerateHandler {
 
     public FramerateHandler() {
         // fetch refreshrate from monitor
-        FPS = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate();
+        if (FPS == 0) {
+            FPS = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate();
+        }
         ns = 1000000000d / (double) this.UPS;
         timer = System.currentTimeMillis();
         lastTime = System.nanoTime();
@@ -69,7 +71,9 @@ public class FramerateHandler {
     }
 
     public void sleep(int ms) {
-        if (ms < 0) ms = 0;
+        if (ms <= 0) { // if ms are 0 or smaller dont sleep
+            return;
+        }
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
