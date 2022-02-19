@@ -1,5 +1,4 @@
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 
@@ -9,7 +8,7 @@ public class FramerateHandler {
     public static int FPS = 80; // FPS = frames per second depends on the monitor refresh rate
     public int frames, updates;
     public long lastTime, timer;
-    public final double ns;
+    public final double ns = 1000000000d / (double) UPS;
     double delta;
 
     public FramerateHandler() {
@@ -17,31 +16,23 @@ public class FramerateHandler {
         if (FPS == 0) {
             FPS = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getDisplayMode().getRefreshRate();
         }
-        ns = 1000000000d / (double) this.UPS;
-        timer = System.currentTimeMillis();
-        lastTime = System.nanoTime();
-
+        
         frames = 0;
         updates = 0;
         delta = 0;
+        
+        timer = System.currentTimeMillis();
+        lastTime = System.nanoTime();
     }
 
     // PUT YOUR UPDATE LOGIC HERE !
     private void update() {
-        Main.instance.draw.updateCubes();
+        Main.instance.draw.update();
     }
 
     // PUT YOUR RENDER LOGIC HERE !
     private void render(Graphics g) {
-        // Background
-        g.setColor(new Color(255, 255, 255));
-        g.fillRect(0, 0, Draw.WIDTH, Draw.HEIGHT);
-
-        // Draw Cubes
-        g.setColor(new Color(255, 0, 0));
-        for (Cube cube : Main.instance.draw.cubes) {
-            g.fillRect(cube.x, cube.y, cube.size, cube.size);
-        }
+        Main.instance.draw.draw(g);
     }
 
     public void run(Graphics g) {
