@@ -7,6 +7,8 @@
 
 A Framerate Handler that is mostly seen in Games. Games have to provide the user with a smooth gaming experience. Normal while loops run too fast and inconsistently. By using an update loop that runs every second 60 Times, the game runs smoothly and reduces cpu usage.
 
+An infinite loop gets created in the **paintComponent** function by calling **repaint()**. This function calls the FramerateHandler class which handles everything and calls **update()** and **draw(g)** back in the Draw class.
+
 ## ShowCase
 https://user-images.githubusercontent.com/87524553/150420224-e21f4e3d-3454-4629-ab5a-0c6d14138be8.mp4
 
@@ -15,6 +17,9 @@ https://user-images.githubusercontent.com/87524553/150420224-e21f4e3d-3454-4629-
 * **CPU usage friendly** ``(uses Thread.sleep for managing game loop)``
 * **Latency Handling** ``(Tries to keep the FPS high even under latency/lag)``
 * **Constant UPS** ``(Updates per second allow for smooth and consistent updates on any system)``
+
+## Known Issues
+* Setting **100FPS** results in 65FPS -> **Thread.sleep(10) is inaccurate!**
 
 ## Authors
 
